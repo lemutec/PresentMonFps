@@ -5,6 +5,8 @@
 	<Target Name="CopyPresentMonDll" BeforeTargets="AfterCompile">
 		<ItemGroup>
 			<PresentMonDll Include="$(MSBuildThisFileDirectory)..\lib\netstandard2.0\x64\PresentMon.dll" Condition="'$(PlatformTarget)' == 'x64'" />
+			<PresentMonDll Include="$(MSBuildThisFileDirectory)..\lib\netstandard2.0\x64\PresentMon.dll" Condition="'$(PlatformTarget)' != 'x64' and '$(PlatformTarget)' != 'x86'" />
+			<PresentMonDll Include="$(MSBuildThisFileDirectory)..\lib\netstandard2.0\x64\PresentMon.dll" Condition="'$(PlatformTarget)' != 'x86'" />
 		</ItemGroup>
 		<Copy SourceFiles="@(PresentMonDll)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="True" />
 	</Target>
