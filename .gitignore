@@ -8,6 +8,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.zip
+*.7z
 *.nupkg
 
 # User-specific files (MonoDevelop/Xamarin Studio)
@@ -172,3 +174,6 @@ UpgradeLog*.txt
 
 # Backup files when performing XAML Binding debugging
 *.backupid-*.BindingExpression
+
+# Restore the dlls
+!lib/
