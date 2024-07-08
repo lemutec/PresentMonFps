@@ -8,6 +8,16 @@ The PresentMon .NET Wrapper for FPS.
 >
 > The x64 target platform is requested.
 
+## Installation
+
+**Nuget**：https://www.nuget.org/packages/PresentMonFps
+
+**PackageReference**
+
+```xaml
+<PackageReference Include="PresentMonFps" Version="1.0.8.1" />
+```
+
 ## Demo
 
 ```c#
