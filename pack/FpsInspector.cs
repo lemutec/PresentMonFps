@@ -8,6 +8,8 @@ namespace PresentMonFps;
 
 public static class FpsInspector
 {
+    public static bool IsAvailable => Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.Is64BitProcess && AdvApi32.IsRunAsAdmin();
+
     public static async Task<uint> GetProcessIdByNameAsync(string processName)
     {
         return await Task.Run(() => Kernel32.GetProcessIdByName(processName));

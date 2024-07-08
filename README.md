@@ -4,6 +4,10 @@
 
 The PresentMon .NET Wrapper for FPS.
 
+> The Administrator Permission UAC is requested.
+>
+> The x64 target platform is requested.
+
 ## Demo
 
 ```c#

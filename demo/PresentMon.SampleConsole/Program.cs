@@ -7,7 +7,13 @@ internal sealed class Program
 {
     public static void Main(string[] args)
     {
-        uint pid = FpsInspector.GetProcessIdByNameAsync(args.Length > 0 ? args[0] : "YuanShen.exe").GetAwaiter().GetResult();
+        if (!FpsInspector.IsAvailable)
+        {
+            Console.WriteLine("This library is only available on Windows x64 and Administrator Permission.");
+            return;
+        }
+
+        uint pid = FpsInspector.GetProcessIdByNameAsync(args.Length > 0 ? args[0] : "vsedit.exe").GetAwaiter().GetResult();
 
         // Once
         FpsResult result = FpsInspector.StartOnceAsync(new FpsRequest(pid)).GetAwaiter().GetResult();

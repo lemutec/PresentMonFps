@@ -22,6 +22,7 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>Favicon.png</PackageIcon>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>

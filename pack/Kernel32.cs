@@ -92,6 +92,9 @@ internal static class Kernel32
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool CloseHandle(IntPtr hObject);
 
+    [DllImport("Kernel32.dll", SetLastError = true)]
+    public static extern IntPtr GetCurrentProcess();
+
     public static uint GetProcessIdByName(string processName)
     {
         uint pid = 0;
