@@ -11,13 +11,22 @@ The PresentMon .NET Wrapper for FPS.
 ## Demo
 
 ```c#
+// Check Available.
+if (!FpsInspector.IsAvailable)
+{
+    Console.WriteLine("This library is only available on Windows x64 and Administrator Permission.");
+    return;
+}
+
+// Simple method to get PID.
+// Fullname is unnecessary.
 uint pid = await FpsInspector.GetProcessIdByNameAsync("YourApp.exe");
 
-// Once
+// Calculate FPS Once.
 FpsResult result = await FpsInspector.StartOnceAsync(new FpsRequest(pid));
 Console.WriteLine(result);
 
-// Forever
+// Calculate FPS Forever.
 await FpsInspector.StartForeverAsync(new FpsRequest(pid), Console.WriteLine, null!);
 ```
 
