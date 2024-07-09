@@ -12,7 +12,7 @@ internal sealed class Program
         // Check Available.
         if (!FpsInspector.IsAvailable)
         {
-            Console.WriteLine("This library is only available on Windows x64 and Administrator Permission.");
+            Console.WriteLine("This library is only available on Windows.");
             return;
         }
 

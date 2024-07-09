@@ -4,10 +4,6 @@
 
 The PresentMon .NET Wrapper for FPS.
 
-> The Administrator Permission UAC is requested.
->
-> The x64 target platform is requested.
-
 ## Installation
 
 **Nuget**：https://www.nuget.org/packages/PresentMonFps
@@ -15,7 +11,7 @@ The PresentMon .NET Wrapper for FPS.
 **PackageReference**
 
 ```xaml
-<PackageReference Include="PresentMonFps" Version="1.0.8.1" />
+<PackageReference Include="PresentMonFps" Version="2.0.0" />
 ```
 
 ## Demo
@@ -24,7 +20,7 @@ The PresentMon .NET Wrapper for FPS.
 // Check Available.
 if (!FpsInspector.IsAvailable)
 {
-    Console.WriteLine("This library is only available on Windows x64 and Administrator Permission.");
+    Console.WriteLine("This library is only available on Windows.");
     return;
 }
 
@@ -42,12 +38,14 @@ await FpsInspector.StartForeverAsync(new FpsRequest(pid), Console.WriteLine, nul
 
 ## Thanks to
 
-- https://github.com/Andrey1994/fps_inspector_sdk
-- https://pypi.org/project/fps-inspector-sdk/
-
 - https://github.com/GameTechDev/PresentMon
 
 ## Licenses
 
-MIT
+[MIT](https://github.com/lemutec/PresentMonFps/blob/v2/LICENSE)
 
+## Q&A
+
+Q. What's the diff with v1?
+
+A. Use .NET only instead of C++.
