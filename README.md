@@ -1,4 +1,4 @@
-<img src="https://github.com/lemutec/PresentMonFps/blob/master/pack/Favicon.png?raw=true" width="80">
+<img src="https://raw.githubusercontent.com/lemutec/PresentMonFps/v2/src/Favicon.png" width="80">
 
 # PresentMonFps
 
