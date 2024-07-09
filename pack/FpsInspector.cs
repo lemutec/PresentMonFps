@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,7 +9,16 @@ namespace PresentMonFps;
 
 public static class FpsInspector
 {
+    public const string SessionName = "PresentMon";
+
     public static bool IsAvailable => Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.Is64BitProcess && AdvApi32.IsRunAsAdmin();
+
+    public static void StopTraceSession()
+    {
+        AdvApi32.EVENT_TRACE_PROPERTIES properties = new();
+        properties.Wnode.BufferSize = (uint)Marshal.SizeOf<AdvApi32.EVENT_TRACE_PROPERTIES>();
+        _ = AdvApi32.ControlTrace(0, SessionName, ref properties, AdvApi32.EVENT_TRACE_CONTROL.EVENT_TRACE_CONTROL_STOP);
+    }
 
     public static async Task<uint> GetProcessIdByNameAsync(string processName)
     {
@@ -91,6 +101,8 @@ public static class FpsInspector
 
             tcs.SetResult(result);
         });
+
+        StopTraceSession();
         return await tcs.Task;
     }
 
@@ -98,6 +110,7 @@ public static class FpsInspector
     {
         while (!(token?.IsCancellationRequested ?? false))
         {
+            StopTraceSession();
             FpsResult result = await StartOnceAsync(request);
             callback?.Invoke(result);
         }
@@ -120,7 +133,7 @@ public sealed class FpsResult(PresentMon.EventScores[] eventScores)
 {
     public PresentMon.EventScores[] EventScores { get; internal set; } = eventScores;
 
-    public float Fps => EventScores.Length > 0 ? (float)(EventScores.Sum(es => es.fps) / EventScores.Length) : 0f;
+    public float Fps => EventScores.Length > 0 ? (float)(EventScores.Sum(es => es.fps) / EventScores.Select(es => es.fps != 0f).Count()) : 0f;
 
     public FpsResult() : this([])
     {

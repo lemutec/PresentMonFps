@@ -47,6 +47,61 @@ internal static class AdvApi32
         TokenLogonSid
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct EVENT_TRACE_PROPERTIES
+    {
+        public WNODE_HEADER Wnode;
+        public uint BufferSize;
+        public uint MinimumBuffers;
+        public uint MaximumBuffers;
+        public uint MaximumFileSize;
+        public uint LogFileMode;
+        public uint FlushTimer;
+        public uint EnableFlags;
+        public int AgeLimit;
+        public int NumberOfBuffers;
+        public uint FreeBuffers;
+        public uint EventsLost;
+        public uint BuffersWritten;
+        public uint LogBuffersLost;
+        public uint RealTimeBuffersLost;
+        public nint LoggerThreadId;
+        public uint LogFileNameOffset;
+        public uint LoggerNameOffset;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct WNODE_HEADER
+    {
+        public uint BufferSize;
+        public uint ProviderId;
+        public ulong HistoricalContext;
+        public ulong TimeStamp;
+        public Guid Guid;
+        public uint ClientContext;
+        public uint Flags;
+    }
+
+    public enum EVENT_TRACE_CONTROL
+    {
+        EVENT_TRACE_CONTROL_QUERY = 0,
+
+        EVENT_TRACE_CONTROL_STOP = 1,
+
+        EVENT_TRACE_CONTROL_UPDATE = 2,
+
+        EVENT_TRACE_CONTROL_FLUSH = 3,
+
+        EVENT_TRACE_CONTROL_INCREMENT_FILE = 4,
+    }
+
+    [Obsolete]
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern uint StopTrace(ulong sessionHandle, string sessionName, ref EVENT_TRACE_PROPERTIES properties);
+
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern uint ControlTrace(ulong sessionHandle, string sessionName, ref EVENT_TRACE_PROPERTIES properties, EVENT_TRACE_CONTROL ControlCode);
+
     public static bool IsRunAsAdmin()
     {
         nint tokenHandle = IntPtr.Zero;
