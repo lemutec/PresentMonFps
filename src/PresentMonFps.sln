@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CC18
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentMon.SampleConsole", "..\demo\PresentMon.SampleConsole\PresentMon.SampleConsole.csproj", "{25D16B4A-6E20-4A4A-93FF-27C421DC999D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentMon.SampleWPF", "..\demo\PresentMon.SampleWPF\PresentMon.SampleWPF.csproj", "{FB52A46C-8B6F-4C38-9252-4890128F93A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +45,25 @@ Global
 		{25D16B4A-6E20-4A4A-93FF-27C421DC999D}.Release|x64.Build.0 = Release|x64
 		{25D16B4A-6E20-4A4A-93FF-27C421DC999D}.Release|x86.ActiveCfg = Release|x86
 		{25D16B4A-6E20-4A4A-93FF-27C421DC999D}.Release|x86.Build.0 = Release|x86
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|x64.Build.0 = Release|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{25D16B4A-6E20-4A4A-93FF-27C421DC999D} = {CC184ABF-5B53-4222-ADD2-7C25139FDB6F}
+		{FB52A46C-8B6F-4C38-9252-4890128F93A7} = {CC184ABF-5B53-4222-ADD2-7C25139FDB6F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DBB91D8-CD44-4C19-8624-6AB2E2320DB9}

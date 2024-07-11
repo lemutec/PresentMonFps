@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Vanara.PInvoke.User32" Version="4.0.2" />
+		<PackageReference Include="Vanara.PInvoke.SHCore" Version="4.0.2" />
+		<PackageReference Include="Vanara.PInvoke.Gdi32" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\PresentMonFps.csproj" />
+	</ItemGroup>
+
+</Project>

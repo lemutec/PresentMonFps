@@ -1,8 +1,6 @@
 ﻿using PresentMonFps;
 using System;
 
-#pragma warning disable IDE0200
-
 namespace PresentMon.SampleConsole;
 
 internal sealed class Program
@@ -25,10 +23,16 @@ internal sealed class Program
         Console.WriteLine(result);
 
         // Calculate FPS Forever.
+        int count = default;
         FpsInspector.StartForeverAsync(new FpsRequest(pid), (result) =>
         {
             // Do what you want with the result.
             Console.WriteLine(result);
+            if (++count > 99999)
+            {
+                // You can cancel async task anytime.
+                result.IsCanceled = true;
+            }
         }).GetAwaiter().GetResult();
     }
 }
