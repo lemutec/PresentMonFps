@@ -4,14 +4,27 @@ namespace PresentMonFps;
 
 public sealed class FpsCalculator
 {
-    private const int _sampleCount = 100;
+    private const int _sampleCount = 50;
     private long[] _presentTimestamps = new long[_sampleCount];
     private int _index = 0;
     private int _count = 0;
 
-    public double Fps { get; private set; } = default;
+    public double _fps = default;
 
-    public event EventHandler<double>? ResultReceived = null;
+    public double Fps
+    {
+        get => _fps;
+        private set
+        {
+            if (_fps != value)
+            {
+                _fps = value;
+                FpsReceived?.Invoke(value);
+            }
+        }
+    }
+
+    public event Action<double>? FpsReceived = null;
 
     public unsafe void Calculate(long timestampTicks)
     {
@@ -31,7 +44,6 @@ public sealed class FpsCalculator
                 double totalTime = (lastTimestamp - firstTimestamp) / (double)TimeSpan.TicksPerSecond;
                 double fps = (_count - 1) / totalTime;
                 Fps = fps;
-                ResultReceived?.Invoke(this, fps);
             }
         }
     }

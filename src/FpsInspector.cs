@@ -1,8 +1,10 @@
 ﻿using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Session;
 using PresentMonFps.ETW;
+using PresentMonFps.Natives;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -27,6 +29,28 @@ public static class FpsInspector
     public static uint GetProcessIdByName(string processName)
     {
         return Kernel32.GetProcessIdByName(processName);
+    }
+
+    public static nint GetMainWindowHandle(uint processId)
+    {
+        nint mainWindowHandle = IntPtr.Zero;
+
+        Process? p = Process.GetProcesses().Where(p => p.Id == processId).FirstOrDefault();
+
+        if (p != null)
+        {
+            _ = User32.EnumWindows((hWnd, lParam) =>
+            {
+                _ = User32.GetWindowThreadProcessId(hWnd, out uint windowProcessId);
+                if (windowProcessId == processId && User32.IsWindowVisible(hWnd))
+                {
+                    mainWindowHandle = hWnd;
+                    return false;
+                }
+                return true;
+            }, IntPtr.Zero);
+        }
+        return mainWindowHandle;
     }
 
     public static async Task<uint> GetProcessIdByNameAsync(string processName)
@@ -103,16 +127,72 @@ public static class FpsInspector
 
     public static async Task StartForeverAsync(FpsRequest request, Action<FpsResult>? callback = null, CancellationToken? token = null)
     {
-        while (!(token?.IsCancellationRequested ?? false))
+        if (Environment.OSVersion.Platform != PlatformID.Win32NT)
         {
-            FpsResult result = await StartOnceAsync(request);
+            throw new OperationCanceledException($"For now only Windows is supported, detected platform is {Environment.OSVersion.Platform}.");
+        }
 
-            callback?.Invoke(result);
-            if (result.IsCanceled)
+        if (request.TargetPid == 0)
+        {
+            throw new ArgumentException(nameof(FpsRequest.TargetPid));
+        }
+
+        FpsResult result = new();
+        Vector<ulong> presentTimestamps = new(100);
+        FpsCalculator fps = new();
+        int pid = (int)request.TargetPid;
+        Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
+        TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
+
+        void OnDynamicAll(TraceEvent data)
+        {
+            if (data.ProcessID != pid)
             {
-                break;
+                return;
+            }
+
+            /// <see cref="Present"/>
+            /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
+            if (data.ProviderGuid == dxgKrnlGuid)
+            {
+                if (data.ID == presentEventId)
+                {
+                    DateTime timestamp = data.TimeStamp;
+                    fps.Calculate(timestamp.Ticks);
+                }
             }
         }
+
+        void OnFpsReceived(double fps)
+        {
+            result.Fps = fps;
+            callback?.Invoke(result);
+        }
+
+        using TraceEventSession session = new(SessionName);
+
+        fps.FpsReceived += OnFpsReceived;
+        session.Source.Dynamic.All += OnDynamicAll;
+        session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
+
+        Task processTask = Task.Factory.StartNew(session.Source.Process, TaskCreationOptions.LongRunning);
+        Task comcumerTask = Task.Run(() =>
+        {
+            while (!(token?.IsCancellationRequested ?? false))
+            {
+                Thread.Sleep(request.PeriodMillisecond);
+                if (result.IsCanceled)
+                {
+                    break;
+                }
+            }
+        });
+
+        _ = await Task.WhenAny(processTask, comcumerTask);
+
+        fps.FpsReceived -= OnFpsReceived;
+        session.Source.Dynamic.All -= OnDynamicAll;
+        session.Source.StopProcessing();
     }
 }
 
@@ -127,16 +207,16 @@ public sealed class FpsRequest(uint targetPid)
 }
 
 [DebuggerDisplay("{ToString()}")]
-public sealed class FpsResult
+public sealed class FpsResult(double fps)
 {
     /// <summary>
     /// Only used for <see cref="FpsInspector.StartForeverAsync"/>.
     /// </summary>
     public bool IsCanceled { get; set; } = false;
 
-    public double Fps { get; set; } = default;
+    public double Fps { get; set; } = fps;
 
-    public FpsResult()
+    public FpsResult() : this(default)
     {
     }
 
