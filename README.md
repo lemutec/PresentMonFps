@@ -11,7 +11,7 @@ The PresentMon .NET Wrapper for FPS.
 **PackageReference**
 
 ```xaml
-<PackageReference Include="PresentMonFps" Version="2.0.0" />
+<PackageReference Include="PresentMonFps" Version="2.0.1" />
 ```
 
 ## Demo
@@ -48,4 +48,4 @@ await FpsInspector.StartForeverAsync(new FpsRequest(pid), Console.WriteLine, nul
 
 Q. What's the diff with v1?
 
-A. Use .NET only instead of C++.
+A. C++ Library and UAC is not necessary anymore, the method of `ForeverAsync` is more faster.
