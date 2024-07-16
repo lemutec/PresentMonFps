@@ -62,137 +62,153 @@ public static class FpsInspector
     {
         if (Environment.OSVersion.Platform != PlatformID.Win32NT)
         {
-            throw new OperationCanceledException($"For now only Windows is supported, detected platform is {Environment.OSVersion.Platform}.");
+            throw new FpsInspectorException($"For now only Windows is supported, detected platform is {Environment.OSVersion.Platform}.");
         }
 
         if (request.TargetPid == 0)
         {
-            throw new ArgumentException(nameof(FpsRequest.TargetPid));
+            throw new FpsInspectorException($"Target Pid {nameof(FpsRequest.TargetPid)} is not supported.");
         }
 
-        TaskCompletionSource<FpsResult> tcs = new();
-        FpsResult result = new();
-        Vector<ulong> presentTimestamps = new(100);
-        FpsCalculator fps = new();
-        int pid = (int)request.TargetPid;
-        Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
-        TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
-
-        void OnDynamicAll(TraceEvent data)
+        try
         {
-            if (data.ProcessID != pid)
-            {
-                return;
-            }
+            TaskCompletionSource<FpsResult> tcs = new();
+            FpsResult result = new();
+            Vector<ulong> presentTimestamps = new(100);
+            FpsCalculator fps = new();
+            int pid = (int)request.TargetPid;
+            Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
+            TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
 
-            /// <see cref="Present"/>
-            /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
-            if (data.ProviderGuid == dxgKrnlGuid)
+            await Task.Run(() =>
             {
-                if (data.ID == presentEventId)
+                using TraceEventSession session = new(SessionName);
+
+                session.Source.Dynamic.All += OnDynamicAll;
+                session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
+
+                _ = Task.Run(() =>
                 {
-                    DateTime timestamp = data.TimeStamp;
-                    fps.Calculate(timestamp.Ticks);
+                    session.Source.Process();
+                });
+
+                SpinWait.SpinUntil(() =>
+                {
+                    Thread.Sleep(request.PeriodMillisecond);
+                    return fps.Fps != 0d;
+                }, 5000);
+
+                session.Source.Dynamic.All -= OnDynamicAll;
+                session.Source.StopProcessing();
+
+                result.Fps = fps.Fps;
+                tcs.SetResult(result);
+            });
+
+            return await tcs.Task;
+
+            void OnDynamicAll(TraceEvent data)
+            {
+                if (data.ProcessID != pid)
+                {
+                    return;
+                }
+
+                /// <see cref="Present"/>
+                /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
+                if (data.ProviderGuid == dxgKrnlGuid)
+                {
+                    if (data.ID == presentEventId)
+                    {
+                        DateTime timestamp = data.TimeStamp;
+                        fps.Calculate(timestamp.Ticks);
+                    }
                 }
             }
         }
-
-        await Task.Run(() =>
+        catch (Exception e)
         {
-            using TraceEventSession session = new(SessionName);
-
-            session.Source.Dynamic.All += OnDynamicAll;
-            session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
-
-            _ = Task.Run(() =>
-            {
-                session.Source.Process();
-            });
-
-            SpinWait.SpinUntil(() =>
-            {
-                Thread.Sleep(request.PeriodMillisecond);
-                return fps.Fps != 0d;
-            }, 5000);
-
-            session.Source.Dynamic.All -= OnDynamicAll;
-            session.Source.StopProcessing();
-
-            result.Fps = fps.Fps;
-            tcs.SetResult(result);
-        });
-
-        return await tcs.Task;
+            throw new FpsInspectorException(e.Message);
+        }
     }
 
     public static async Task StartForeverAsync(FpsRequest request, Action<FpsResult>? callback = null, CancellationToken? token = null)
     {
         if (Environment.OSVersion.Platform != PlatformID.Win32NT)
         {
-            throw new OperationCanceledException($"For now only Windows is supported, detected platform is {Environment.OSVersion.Platform}.");
+            throw new FpsInspectorException($"For now only Windows is supported, detected platform is {Environment.OSVersion.Platform}.");
         }
 
         if (request.TargetPid == 0)
         {
-            throw new ArgumentException(nameof(FpsRequest.TargetPid));
+            throw new FpsInspectorException($"Target Pid {nameof(FpsRequest.TargetPid)} is not supported.");
         }
 
-        FpsResult result = new();
-        Vector<ulong> presentTimestamps = new(100);
-        FpsCalculator fps = new();
-        int pid = (int)request.TargetPid;
-        Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
-        TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
-
-        void OnDynamicAll(TraceEvent data)
+        try
         {
-            if (data.ProcessID != pid)
-            {
-                return;
-            }
+            FpsResult result = new();
+            Vector<ulong> presentTimestamps = new(100);
+            FpsCalculator fps = new();
+            int pid = (int)request.TargetPid;
+            Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
+            TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
 
-            /// <see cref="Present"/>
-            /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
-            if (data.ProviderGuid == dxgKrnlGuid)
+            using TraceEventSession session = new(SessionName);
+
+            fps.FpsReceived += OnFpsReceived;
+            session.Source.Dynamic.All += OnDynamicAll;
+            session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
+
+            Task processTask = Task.Factory.StartNew(session.Source.Process, TaskCreationOptions.LongRunning);
+            Task consumeTask = Task.Run(() =>
             {
-                if (data.ID == presentEventId)
+                while (!(token?.IsCancellationRequested ?? false))
                 {
-                    DateTime timestamp = data.TimeStamp;
-                    fps.Calculate(timestamp.Ticks);
+                    Thread.Sleep(request.PeriodMillisecond);
+                    if (result.IsCanceled)
+                    {
+                        break;
+                    }
+                }
+            });
+
+            _ = await Task.WhenAny(processTask, consumeTask);
+
+            fps.FpsReceived -= OnFpsReceived;
+            session.Source.Dynamic.All -= OnDynamicAll;
+            session.Source.StopProcessing();
+
+            return;
+
+            void OnDynamicAll(TraceEvent data)
+            {
+                if (data.ProcessID != pid)
+                {
+                    return;
+                }
+
+                /// <see cref="Present"/>
+                /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
+                if (data.ProviderGuid == dxgKrnlGuid)
+                {
+                    if (data.ID == presentEventId)
+                    {
+                        DateTime timestamp = data.TimeStamp;
+                        fps.Calculate(timestamp.Ticks);
+                    }
                 }
             }
-        }
 
-        void OnFpsReceived(double fps)
-        {
-            result.Fps = fps;
-            callback?.Invoke(result);
-        }
-
-        using TraceEventSession session = new(SessionName);
-
-        fps.FpsReceived += OnFpsReceived;
-        session.Source.Dynamic.All += OnDynamicAll;
-        session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
-
-        Task processTask = Task.Factory.StartNew(session.Source.Process, TaskCreationOptions.LongRunning);
-        Task comcumerTask = Task.Run(() =>
-        {
-            while (!(token?.IsCancellationRequested ?? false))
+            void OnFpsReceived(double fps)
             {
-                Thread.Sleep(request.PeriodMillisecond);
-                if (result.IsCanceled)
-                {
-                    break;
-                }
+                result.Fps = fps;
+                callback?.Invoke(result);
             }
-        });
-
-        _ = await Task.WhenAny(processTask, comcumerTask);
-
-        fps.FpsReceived -= OnFpsReceived;
-        session.Source.Dynamic.All -= OnDynamicAll;
-        session.Source.StopProcessing();
+        }
+        catch (Exception e)
+        {
+            throw new FpsInspectorException(e.Message);
+        }
     }
 }
 

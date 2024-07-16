@@ -32,7 +32,7 @@ public partial class MaskWindow : Window
         float x = DpiHelper.GetScale(targetHWnd).X;
         _ = User32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, (int)(targetRect.Width * x), (int)(targetRect.Height * x), User32.SetWindowPosFlags.SWP_SHOWWINDOW);
 
-        Task.Run(async () =>
+        _ = Task.Run(async () =>
         {
             await FpsInspector.StartForeverAsync(new FpsRequest(pid), (result) =>
             {
