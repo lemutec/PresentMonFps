@@ -9,27 +9,9 @@ internal static class Microsoft_Windows_D3D9
 
     public static readonly Guid GUID = new("783ACA0A-790E-4D7F-8451-AA850511C6B9");
 
-    public static readonly EVENT_DESCRIPTOR_DECL Present_Start = new()
-    {
-        Id = 0x0001,
-        Version = 0x00,
-        Channel = 0x10,
-        Level = 0x00,
-        Opcode = 0x01,
-        Task = 0x0001,
-        Keyword = 0x8000000000000002,
-    };
+    public static readonly EVENT_DESCRIPTOR_DECL Present_Start = new(0x0001, 0x00, 0x10, 0x00, 0x01, 0x0001, 0x8000000000000002);
 
-    public static readonly EVENT_DESCRIPTOR_DECL Present_Stop = new()
-    {
-        Id = 0x0002,
-        Version = 0x00,
-        Channel = 0x10,
-        Level = 0x00,
-        Opcode = 0x02,
-        Task = 0x0001,
-        Keyword = 0x8000000000000002,
-    };
+    public static readonly EVENT_DESCRIPTOR_DECL Present_Stop = new(0x0002, 0x00, 0x10, 0x00, 0x02, 0x0001, 0x8000000000000002);
 
     public enum Keyword : ulong
     {
