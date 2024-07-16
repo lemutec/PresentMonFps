@@ -115,12 +115,17 @@ internal static class AdvApi32
 
     public static bool IsRunAsAdmin()
     {
+        return IsRunAsAdmin(Kernel32.GetCurrentProcess());
+    }
+
+    public static bool IsRunAsAdmin(nint hWnd)
+    {
         nint tokenHandle = IntPtr.Zero;
         try
         {
-            if (!OpenProcessToken(Kernel32.GetCurrentProcess(), TOKEN_QUERY, out tokenHandle))
+            if (!OpenProcessToken(hWnd, TOKEN_QUERY, out tokenHandle))
             {
-                throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+                throw new Win32Exception(Marshal.GetLastWin32Error());
             }
 
             GetTokenInformation(tokenHandle, TOKEN_INFORMATION_CLASS.TokenElevation, IntPtr.Zero, 0, out uint tokenInfoLength);

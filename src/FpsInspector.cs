@@ -53,6 +53,29 @@ public static class FpsInspector
         return mainWindowHandle;
     }
 
+    public static nint GetProcessHandle(uint processId)
+    {
+        try
+        {
+            nint processHandle = IntPtr.Zero;
+
+            Process? p = Process.GetProcesses().Where(p => p.Id == processId).FirstOrDefault();
+
+            if (p != null)
+            {
+                return p.Handle;
+            }
+
+            return processHandle;
+        }
+        catch (Exception e)
+        {
+            _ = e.Message;
+        }
+
+        return IntPtr.Zero;
+    }
+
     public static async Task<uint> GetProcessIdByNameAsync(string processName)
     {
         return await Task.Run(() => Kernel32.GetProcessIdByName(processName));
@@ -209,6 +232,16 @@ public static class FpsInspector
         {
             throw new FpsInspectorException(e.Message);
         }
+    }
+
+    public static bool IsRunAsAdmin()
+    {
+        return AdvApi32.IsRunAsAdmin();
+    }
+
+    public static bool IsRunAsAdmin(nint hWnd)
+    {
+        return AdvApi32.IsRunAsAdmin(hWnd);
     }
 }
 

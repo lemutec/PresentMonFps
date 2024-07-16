@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PresentMonFps;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Interop;
 using Vanara.PInvoke;
@@ -25,19 +26,42 @@ public partial class MaskWindow : Window
         uint pid = FpsInspector.GetProcessIdByName("YuanShen.exe");
         nint targetHWnd = FpsInspector.GetMainWindowHandle(pid);
 
-        _ = User32.GetClientRect(hWnd, out RECT rect);
-        _ = User32.SetParent(hWnd, targetHWnd);
-        _ = User32.GetClientRect(targetHWnd, out RECT targetRect);
+        if (pid == 0 || targetHWnd == 0)
+        {
+            throw new Exception("Process is not running.");
+        }
 
-        float x = DpiHelper.GetScale(targetHWnd).X;
-        _ = User32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, (int)(targetRect.Width * x), (int)(targetRect.Height * x), User32.SetWindowPosFlags.SWP_SHOWWINDOW);
+        _ = User32.GetClientRect(hWnd, out RECT rect);
+        var succ = User32.SetParent(hWnd, targetHWnd);
+        RECT targetRect = default;
+        bool isUACRequested = FpsInspector.IsRunAsAdmin();
+        bool isTargetUACRequested = false;
+
+        if (succ != 0)
+        {
+            _ = User32.GetClientRect(targetHWnd, out targetRect);
+
+            float x = DpiHelper.GetScale(targetHWnd).X;
+            _ = User32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, (int)(targetRect.Width * x), (int)(targetRect.Height * x), User32.SetWindowPosFlags.SWP_SHOWWINDOW);
+        }
+        else
+        {
+            nint targetProcessHandle = FpsInspector.GetProcessHandle(pid);
+
+            isTargetUACRequested = targetProcessHandle == IntPtr.Zero || FpsInspector.IsRunAsAdmin(targetProcessHandle);
+            _ = User32.SetParent(hWnd, IntPtr.Zero);
+            Debug.WriteLine($"Failed to SetParent {(isTargetUACRequested ? ", the Administrator UAC is requested" : string.Empty)}.");
+        }
 
         _ = Task.Run(async () =>
         {
             await FpsInspector.StartForeverAsync(new FpsRequest(pid), (result) =>
             {
-                float x = DpiHelper.GetScale(targetHWnd).X;
-                _ = User32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, (int)(targetRect.Width * x), (int)(targetRect.Height * x), User32.SetWindowPosFlags.SWP_SHOWWINDOW);
+                if (!isTargetUACRequested || (isTargetUACRequested && isUACRequested))
+                {
+                    float x = DpiHelper.GetScale(targetHWnd).X;
+                    _ = User32.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, (int)(targetRect.Width * x), (int)(targetRect.Height * x), User32.SetWindowPosFlags.SWP_SHOWWINDOW);
+                }
                 Fps = $"{result.Fps:0}";
             });
         });
