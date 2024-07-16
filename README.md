@@ -11,7 +11,7 @@ The PresentMon .NET Wrapper for FPS.
 **PackageReference**
 
 ```xaml
-<PackageReference Include="PresentMonFps" Version="2.0.1" />
+<PackageReference Include="PresentMonFps" Version="2.0.2" />
 ```
 
 ## Demo
@@ -35,6 +35,8 @@ Console.WriteLine(result);
 // Calculate FPS Forever.
 await FpsInspector.StartForeverAsync(new FpsRequest(pid), Console.WriteLine, null!);
 ```
+
+See more from [PresentMon.SampleWPF](https://github.com/lemutec/PresentMonFps/tree/v2/demo/PresentMon.SampleWPF) and [PresentMon.SampleConsole](https://github.com/lemutec/PresentMonFps/tree/v2/demo/PresentMon.SampleConsole).
 
 ## Thanks to
 
