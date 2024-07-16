@@ -4,5 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:PresentMon"
     StartupUri="MaskWindow.xaml">
-    <Application.Resources />
+    <Application.Resources>
+        <FontFamily x:Key="DelugeLEDFontFamily">pack://application:,,,/PresentMon.SampleWPF;component/Assets/Fonts/deluge-led.ttf#Deluge LED</FontFamily>
+    </Application.Resources>
 </Application>

@@ -12,8 +12,8 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Border
-        Width="45"
-        Height="45"
+        Width="30"
+        Height="30"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Background="#00000000"
@@ -22,7 +22,8 @@
         <TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="21"
+            FontFamily="{StaticResource DelugeLEDFontFamily}"
+            FontSize="16"
             Foreground="White"
             Text="{Binding Fps}" />
     </Border>

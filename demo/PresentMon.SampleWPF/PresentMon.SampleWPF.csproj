@@ -20,7 +20,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\PresentMonFps.csproj" />
+		<ProjectReference Include="..\..\src\PresentMonFps.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Assets\Fonts\*.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Assets\Fonts\*.ttf" />
 	</ItemGroup>
 
 </Project>
