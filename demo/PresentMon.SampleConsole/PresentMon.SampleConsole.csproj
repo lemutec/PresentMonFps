@@ -5,14 +5,14 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU;x86;x64</Platforms>
-		<PackageVersion>2.0.1</PackageVersion>
-		<AssemblyVersion>2.0.1</AssemblyVersion>
-		<FileVersion>2.0.1</FileVersion>
-		<Version>$(VersionPrefix)2.0.1</Version>
+		<PackageVersion>2.0.3</PackageVersion>
+		<AssemblyVersion>2.0.3</AssemblyVersion>
+		<FileVersion>2.0.3</FileVersion>
+		<Version>$(VersionPrefix)2.0.3</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!--<PackageReference Include="PresentMonFps" Version="2.0.1" />-->
+		<!--<PackageReference Include="PresentMonFps" Version="2.0.3" />-->
 	</ItemGroup>
 
 	<ItemGroup>

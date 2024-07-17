@@ -11,7 +11,7 @@ The PresentMon .NET Wrapper for FPS.
 **PackageReference**
 
 ```xaml
-<PackageReference Include="PresentMonFps" Version="2.0.2" />
+<PackageReference Include="PresentMonFps" Version="2.0.3" />
 ```
 
 ## Demo
