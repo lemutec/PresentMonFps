@@ -4,16 +4,16 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<AssemblyName>PresentMonFps</AssemblyName>
-		<PackageVersion>2.0.3</PackageVersion>
-		<AssemblyVersion>2.0.3</AssemblyVersion>
-		<FileVersion>2.0.3</FileVersion>
-		<Version>$(VersionPrefix)2.0.3</Version>
+		<PackageVersion>2.0.4</PackageVersion>
+		<AssemblyVersion>2.0.4</AssemblyVersion>
+		<FileVersion>2.0.4</FileVersion>
+		<Version>$(VersionPrefix)2.0.4</Version>
 		<LangVersion>12.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<Authors>Lemutec</Authors>
 		<Company>Lemutec</Company>
 		<Title>PresentMonFps</Title>
-		<Description>The PresentMon .NET Wrapper for FPS.</Description>
+		<Description>The PresentMon .NET Wrapper for calculating FPS.</Description>
 		<PackageProjectUrl>https://github.com/lemutec/PresentMonFps</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/lemutec/PresentMonFps</RepositoryUrl>

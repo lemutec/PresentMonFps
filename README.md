@@ -4,17 +4,11 @@
 
 # PresentMonFps
 
-The PresentMon .NET Wrapper for FPS.
+The PresentMon .NET Wrapper for calculating FPS.
 
 ## Installation
 
 **Nuget**：https://www.nuget.org/packages/PresentMonFps
-
-**PackageReference**
-
-```xaml
-<PackageReference Include="PresentMonFps" Version="2.0.3" />
-```
 
 ## Demo
 
@@ -48,8 +42,3 @@ See more from [PresentMon.SampleWPF](https://github.com/lemutec/PresentMonFps/tr
 
 [MIT](https://github.com/lemutec/PresentMonFps/blob/v2/LICENSE)
 
-## Q&A
-
-Q. What's the diff with v1?
-
-A. C++ Library and UAC is not necessary anymore, the method of `ForeverAsync` is more faster.
