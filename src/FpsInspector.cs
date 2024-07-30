@@ -97,10 +97,8 @@ public static class FpsInspector
         {
             TaskCompletionSource<FpsResult> tcs = new();
             FpsResult result = new();
-            Vector<ulong> presentTimestamps = new(100);
             FpsCalculator fps = new();
             int pid = (int)request.TargetPid;
-            Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
             TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
 
             await Task.Run(() =>
@@ -139,7 +137,7 @@ public static class FpsInspector
 
                 /// <see cref="Present"/>
                 /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
-                if (data.ProviderGuid == dxgKrnlGuid)
+                if (data.ProviderGuid == Microsoft_Windows_DxgKrnl.GUID)
                 {
                     if (data.ID == presentEventId)
                     {
@@ -170,10 +168,8 @@ public static class FpsInspector
         try
         {
             FpsResult result = new();
-            Vector<ulong> presentTimestamps = new(100);
             FpsCalculator fps = new();
             int pid = (int)request.TargetPid;
-            Guid dxgKrnlGuid = Microsoft_Windows_DxgKrnl.GUID;
             TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
 
             using TraceEventSession session = new(SessionName);
@@ -212,7 +208,7 @@ public static class FpsInspector
 
                 /// <see cref="Present"/>
                 /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
-                if (data.ProviderGuid == dxgKrnlGuid)
+                if (data.ProviderGuid == Microsoft_Windows_DxgKrnl.GUID)
                 {
                     if (data.ID == presentEventId)
                     {
@@ -269,8 +265,5 @@ public sealed class FpsResult(double fps)
     {
     }
 
-    public override string ToString()
-    {
-        return $"FPS: {Fps}";
-    }
+    public override string ToString() => $"FPS: {Fps}";
 }
