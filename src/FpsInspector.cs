@@ -99,7 +99,8 @@ public static class FpsInspector
             FpsResult result = new();
             FpsCalculator fps = new();
             int pid = (int)request.TargetPid;
-            TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
+            TraceEventID dxgKrnlPresentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
+            TraceEventID dxgiPresentStartEventId = (TraceEventID)Microsoft_Windows_DXGI.Present_Start.Id;
 
             await Task.Run(() =>
             {
@@ -107,6 +108,7 @@ public static class FpsInspector
 
                 session.Source.Dynamic.All += OnDynamicAll;
                 session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
+                session.EnableProvider(Microsoft_Windows_DXGI.GUID);
 
                 _ = Task.Run(() =>
                 {
@@ -137,9 +139,18 @@ public static class FpsInspector
 
                 /// <see cref="Present"/>
                 /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
+                /// <see cref="Microsoft_Windows_DXGI.Name"/>
                 if (data.ProviderGuid == Microsoft_Windows_DxgKrnl.GUID)
                 {
-                    if (data.ID == presentEventId)
+                    if (data.ID == dxgKrnlPresentEventId)
+                    {
+                        DateTime timestamp = data.TimeStamp;
+                        fps.Calculate(timestamp.Ticks);
+                    }
+                }
+                else if (data.ProviderGuid == Microsoft_Windows_DXGI.GUID)
+                {
+                    if (data.ID == dxgiPresentStartEventId)
                     {
                         DateTime timestamp = data.TimeStamp;
                         fps.Calculate(timestamp.Ticks);
@@ -170,13 +181,15 @@ public static class FpsInspector
             FpsResult result = new();
             FpsCalculator fps = new();
             int pid = (int)request.TargetPid;
-            TraceEventID presentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
+            TraceEventID dxgKrnlPresentEventId = (TraceEventID)Microsoft_Windows_DxgKrnl.Present_Info.Id;
+            TraceEventID dxgiPresentStartEventId = (TraceEventID)Microsoft_Windows_DXGI.Present_Start.Id;
 
             using TraceEventSession session = new(SessionName);
 
             fps.FpsReceived += OnFpsReceived;
             session.Source.Dynamic.All += OnDynamicAll;
             session.EnableProvider(Microsoft_Windows_DxgKrnl.GUID);
+            session.EnableProvider(Microsoft_Windows_DXGI.GUID);
 
             Task processTask = Task.Factory.StartNew(session.Source.Process, TaskCreationOptions.LongRunning);
             Task consumeTask = Task.Run(() =>
@@ -208,9 +221,18 @@ public static class FpsInspector
 
                 /// <see cref="Present"/>
                 /// <see cref="Microsoft_Windows_DxgKrnl.Name"/>
+                /// <see cref="Microsoft_Windows_DXGI.Name"/>
                 if (data.ProviderGuid == Microsoft_Windows_DxgKrnl.GUID)
                 {
-                    if (data.ID == presentEventId)
+                    if (data.ID == dxgKrnlPresentEventId)
+                    {
+                        DateTime timestamp = data.TimeStamp;
+                        fps.Calculate(timestamp.Ticks);
+                    }
+                }
+                else if (data.ProviderGuid == Microsoft_Windows_DXGI.GUID)
+                {
+                    if (data.ID == dxgiPresentStartEventId)
                     {
                         DateTime timestamp = data.TimeStamp;
                         fps.Calculate(timestamp.Ticks);
