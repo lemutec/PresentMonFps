@@ -1,4 +1,4 @@
-name: PresentMonFps Library
+name: pack
 
 on:
   release:
@@ -12,28 +12,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
-
-      - name: Setup Windows SDK
-        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.5
+          dotnet-version: 10.0.x
 
       - name: Install dependencies
-        run: cd src && dotnet restore PresentMonFps.csproj
+        run: dotnet restore src\PresentMonFps.csproj
 
       - name: Build
-        run: cd src && dotnet build PresentMonFps.csproj --configuration Release --no-restore
+        run: dotnet build src\PresentMonFps.csproj --configuration Release --no-restore
 
       - name: Pack
-        run: cd src && dotnet pack PresentMonFps.csproj -c Release --no-build -o ../
+        run: dotnet pack src\PresentMonFps.csproj -c Release --no-build -o ../
 
       - name: Push NuGet package
         # run:  dotnet nuget push "out\*.nupkg" -k ${{secrets.NUGET_AUTH_TOKEN}} --source https://api.nuget.org/v3/index.json
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
           path: ./*.nupkg
