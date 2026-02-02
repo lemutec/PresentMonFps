@@ -1,0 +1,19 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Samples/">
+    <Project Path="../demo/PresentMon.SampleConsole/PresentMon.SampleConsole.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Platform Solution="Debug|Any CPU" Project="x86" />
+      <Platform Solution="Release|Any CPU" Project="x64" />
+    </Project>
+    <Project Path="../demo/PresentMon.SampleWPF/PresentMon.SampleWPF.csproj" />
+  </Folder>
+  <Project Path="PresentMonFps.csproj">
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+</Solution>
