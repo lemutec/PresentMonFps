@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace PresentMonFps;
@@ -54,9 +55,10 @@ internal static class Kernel32
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct HSNAPSHOT
     {
-        private readonly IntPtr handle;
+        private readonly nint handle;
 
-        public HSNAPSHOT(IntPtr preexistingHandle) => handle = preexistingHandle;
+        [SuppressMessage("Style", "IDE0290:Use primary constructor")]
+        public HSNAPSHOT(nint preexistingHandle) => handle = preexistingHandle;
 
         public static HSNAPSHOT NULL => new(IntPtr.Zero);
 
@@ -64,7 +66,7 @@ internal static class Kernel32
 
         public static explicit operator IntPtr(HSNAPSHOT h) => h.handle;
 
-        public static implicit operator HSNAPSHOT(IntPtr h) => new(h);
+        public static implicit operator HSNAPSHOT(nint h) => new(h);
 
         public static bool operator !=(HSNAPSHOT h1, HSNAPSHOT h2) => !(h1 == h2);
 
@@ -74,7 +76,7 @@ internal static class Kernel32
 
         public override int GetHashCode() => handle.GetHashCode();
 
-        public IntPtr DangerousGetHandle() => handle;
+        public nint DangerousGetHandle() => handle;
     }
 
     [DllImport("Kernel32.dll", SetLastError = true, ExactSpelling = true)]
@@ -90,10 +92,10 @@ internal static class Kernel32
 
     [DllImport("Kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool CloseHandle(IntPtr hObject);
+    public static extern bool CloseHandle(nint hObject);
 
     [DllImport("Kernel32.dll", SetLastError = true)]
-    public static extern IntPtr GetCurrentProcess();
+    public static extern nint GetCurrentProcess();
 
     public static uint GetProcessIdByName(string processName)
     {

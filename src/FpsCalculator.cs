@@ -5,7 +5,7 @@ namespace PresentMonFps;
 public sealed class FpsCalculator
 {
     private const int _sampleCount = 50;
-    private long[] _presentTimestamps = new long[_sampleCount];
+    private readonly long[] _presentTimestamps = new long[_sampleCount];
     private int _index = 0;
     private int _count = 0;
 

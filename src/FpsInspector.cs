@@ -5,7 +5,6 @@ using PresentMonFps.Natives;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +34,7 @@ public static class FpsInspector
     {
         nint mainWindowHandle = IntPtr.Zero;
 
-        Process? p = Process.GetProcesses().Where(p => p.Id == processId).FirstOrDefault();
+        Process? p = Process.GetProcesses().FirstOrDefault(p => p.Id == processId);
 
         if (p != null)
         {
@@ -59,7 +58,7 @@ public static class FpsInspector
         {
             nint processHandle = IntPtr.Zero;
 
-            Process? p = Process.GetProcesses().Where(p => p.Id == processId).FirstOrDefault();
+            Process? p = Process.GetProcesses().FirstOrDefault(p => p.Id == processId);
 
             if (p != null)
             {
