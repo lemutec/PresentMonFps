@@ -5,10 +5,10 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>2.0.3</PackageVersion>
-		<AssemblyVersion>2.0.3</AssemblyVersion>
-		<FileVersion>2.0.3</FileVersion>
-		<Version>$(VersionPrefix)2.0.3</Version>
+		<PackageVersion>2.0.6</PackageVersion>
+		<AssemblyVersion>2.0.6</AssemblyVersion>
+		<FileVersion>2.0.6</FileVersion>
+		<Version>$(VersionPrefix)2.0.6</Version>
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
