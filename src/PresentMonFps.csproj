@@ -42,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Favicon.png">
+		<None Include="Favicon.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
