@@ -24,6 +24,12 @@
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
         <Platforms>AnyCPU;x86;x64</Platforms>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <IncludeSymbols>true</IncludeSymbols>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <ItemGroup>
