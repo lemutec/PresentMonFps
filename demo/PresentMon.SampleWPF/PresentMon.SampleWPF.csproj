@@ -13,10 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Vanara.PInvoke.User32" Version="4.0.3" />
-		<PackageReference Include="Vanara.PInvoke.SHCore" Version="4.0.3" />
-		<PackageReference Include="Vanara.PInvoke.Gdi32" Version="4.0.3" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Vanara.PInvoke.User32" Version="5.0.4" />
+		<PackageReference Include="Vanara.PInvoke.SHCore" Version="5.0.4" />
+		<PackageReference Include="Vanara.PInvoke.Gdi32" Version="5.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
