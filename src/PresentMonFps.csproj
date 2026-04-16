@@ -1,51 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-		<AssemblyName>PresentMonFps</AssemblyName>
-		<PackageVersion>2.0.6</PackageVersion>
-		<AssemblyVersion>2.0.6</AssemblyVersion>
-		<FileVersion>2.0.6</FileVersion>
-		<Version>$(VersionPrefix)2.0.6</Version>
-		<LangVersion>preview</LangVersion>
-		<Nullable>enable</Nullable>
-		<Authors>Lemutec</Authors>
-		<Company>Lemutec</Company>
-		<Title>PresentMonFps</Title>
-		<Description>The PresentMon .NET Wrapper for calculating FPS.</Description>
-		<PackageProjectUrl>https://github.com/lemutec/PresentMonFps</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/lemutec/PresentMonFps</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>PresentMon</PackageTags>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageIcon>Favicon.png</PackageIcon>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<Platforms>AnyCPU;x86;x64</Platforms>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <AssemblyName>PresentMonFps</AssemblyName>
+        <PackageVersion>2.0.6</PackageVersion>
+        <AssemblyVersion>2.0.6</AssemblyVersion>
+        <FileVersion>2.0.6</FileVersion>
+        <Version>$(VersionPrefix)2.0.6</Version>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <Authors>Lemutec</Authors>
+        <Company>Lemutec</Company>
+        <Title>PresentMonFps</Title>
+        <Description>The PresentMon .NET Wrapper for calculating FPS.</Description>
+        <PackageProjectUrl>https://github.com/lemutec/PresentMonFps</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/lemutec/PresentMonFps</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>PresentMon</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>Favicon.png</PackageIcon>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <Platforms>AnyCPU;x86;x64</Platforms>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.2.2" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.2.2" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\LICENSE">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Include="Favicon.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="Favicon.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>

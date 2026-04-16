@@ -1,34 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageVersion>2.0.6</PackageVersion>
-		<AssemblyVersion>2.0.6</AssemblyVersion>
-		<FileVersion>2.0.6</FileVersion>
-		<Version>$(VersionPrefix)2.0.6</Version>
-		<UseWPF>true</UseWPF>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <PackageVersion>2.0.6</PackageVersion>
+        <AssemblyVersion>2.0.6</AssemblyVersion>
+        <FileVersion>2.0.6</FileVersion>
+        <Version>$(VersionPrefix)2.0.6</Version>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="Vanara.PInvoke.User32" Version="5.0.4" />
-		<PackageReference Include="Vanara.PInvoke.SHCore" Version="5.0.4" />
-		<PackageReference Include="Vanara.PInvoke.Gdi32" Version="5.0.4" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+        <PackageReference Include="Vanara.PInvoke.User32" Version="5.0.4" />
+        <PackageReference Include="Vanara.PInvoke.SHCore" Version="5.0.4" />
+        <PackageReference Include="Vanara.PInvoke.Gdi32" Version="5.0.4" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\PresentMonFps.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\PresentMonFps.csproj" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Remove="Assets\Fonts\*.ttf" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\Fonts\*.ttf" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Resource Include="Assets\Fonts\*.ttf" />
-	</ItemGroup>
+    <ItemGroup>
+        <Resource Include="Assets\Fonts\*.ttf" />
+    </ItemGroup>
 
 </Project>
